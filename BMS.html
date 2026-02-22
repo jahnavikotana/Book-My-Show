@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookMyShow Clone - Home</title>
+
+<style>
+/* ===== RESET ===== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+    background:#d9232d;
+    color:white;
+    padding:15px 30px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+}
+
+/* ===== HERO SECTION ===== */
+.hero{
+    background:url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba")
+    center/cover no-repeat;
+    height:60vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    color:white;
+}
+
+.hero h2{
+    font-size:42px;
+}
+
+.hero p{
+    margin-top:10px;
+    font-size:18px;
+}
+
+/* ===== FEATURED SECTION ===== */
+.featured{
+    padding:40px;
+}
+
+.featured h2{
+    margin-bottom:20px;
+}
+
+/* ===== MOVIE GRID ===== */
+.movie-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+/* ===== MOVIE CARD ===== */
+.movie-card{
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.movie-card:hover{
+    transform:scale(1.05);
+}
+
+.movie-card img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+.movie-info{
+    padding:15px;
+}
+
+.movie-title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.genre{
+    color:gray;
+    font-size:14px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media(max-width:768px){
+
+.hero{
+    height:40vh;
+}
+
+.hero h2{
+    font-size:26px;
+}
+
+.featured{
+    padding:20px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<header>
+    <nav class="navbar">
+        <h1 class="logo">BookMyShow</h1>
+    </nav>
+</header>
+
+<!-- ===== LANDING PAGE ===== -->
+<section class="hero">
+    <div>
+        <h2>Experience Movies Like Never Before</h2>
+        <p>Book tickets for the latest movies & shows</p>
+    </div>
+</section>
+
+<!-- ===== MOVIE LISTINGS ===== -->
+<section class="featured">
+    <h2>Featured Movies</h2>
+    <div class="movie-container" id="movieContainer"></div>
+</section>
+
+<script>
+/* ===== MOVIE DATA ===== */
+const movies = [
+{
+title:"Avengers: Endgame",
+genre:"Action | Sci-Fi",
+poster:"https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg"
+},
+{
+title:"Joker",
+genre:"Crime | Drama",
+poster:"https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg"
+},
+{
+title:"Interstellar",
+genre:"Adventure | Sci-Fi",
+poster:"https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+},
+{
+title:"RRR",
+genre:"Action | Drama",
+poster:"https://image.tmdb.org/t/p/w500/qpbZgUCf6Nch3C8lqE8Kjqz0H0N.jpg"
+}
+];
+
+/* ===== LOAD MOVIES ===== */
+const container = document.getElementById("movieContainer");
+
+movies.forEach(movie => {
+
+const card = document.createElement("div");
+card.classList.add("movie-card");
+
+card.innerHTML = `
+<img src="${movie.poster}" alt="${movie.title}">
+<div class="movie-info">
+    <div class="movie-title">${movie.title}</div>
+    <div class="genre">${movie.genre}</div>
+</div>
+`;
+
+container.appendChild(card);
+
+});
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BookMyShow Clone</title>
+
+<!-- SUPABASE CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+  font-family:Arial;
+  margin:0;
+  background:#f4f4f4;
+}
+
+/* NAVBAR */
+.navbar{
+  background:#d9232d;
+  color:white;
+  padding:15px;
+  font-size:22px;
+}
+
+/* AUTH BOX */
+.auth{
+  padding:20px;
+  background:white;
+  margin:20px;
+  border-radius:8px;
+}
+
+input,button{
+  padding:10px;
+  margin:5px;
+}
+
+button{
+  background:#d9232d;
+  color:white;
+  border:none;
+  cursor:pointer;
+}
+
+/* MOVIES GRID */
+.movies{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+.card{
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+}
+
+.card div{
+  padding:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">BookMyShow Clone</div>
+
+<!-- AUTH SECTION -->
+<div class="auth">
+<h3>Login / Sign Up</h3>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="signUp()">Sign Up</button>
+<button onclick="login()">Login</button>
+
+<p id="userStatus"></p>
+</div>
+
+<!-- MOVIES -->
+<div class="movies" id="movies"></div>
+
+<script>
+
+/* ===========================
+   SUPABASE CONFIG
+=========================== */
+
+const supabase = window.supabase.createClient(
+  "YOUR_SUPABASE_URL",
+  "YOUR_SUPABASE_ANON_KEY"
+);
+
+/* ===========================
+   AUTHENTICATION
+=========================== */
+
+async function signUp(){
+  const email=emailInput();
+  const password=passwordInput();
+
+  const {error}=await supabase.auth.signUp({email,password});
+  if(error) alert(error.message);
+  else alert("Signup success!");
+}
+
+async function login(){
+  const email=emailInput();
+  const password=passwordInput();
+
+  const {error}=await supabase.auth.signInWithPassword({
+    email,password
+  });
+
+  if(error) alert(error.message);
+  else {
+    alert("Login success");
+    loadMovies();
+  }
+}
+
+function emailInput(){
+  return document.getElementById("email").value;
+}
+function passwordInput(){
+  return document.getElementById("password").value;
+}
+
+/* ===========================
+   LOAD MOVIES FROM DATABASE
+=========================== */
+
+async function loadMovies(){
+
+  const {data}=await supabase
+    .from("movies")
+    .select("*");
+
+  const container=document.getElementById("movies");
+  container.innerHTML="";
+
+  data.forEach(movie=>{
+
+    container.innerHTML+=`
+      <div class="card">
+        <img src="${movie.poster}">
+        <div>
+          <b>${movie.title}</b><br>
+          ${movie.genre}<br>
+          Seats: ${movie.available_seats}<br>
+          Status: ${movie.status}<br>
+          <button onclick="bookMovie('${movie.id}')">
+          Book Now
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+/* ===========================
+   REALTIME LISTENER
+=========================== */
+
+supabase.channel("movies-live")
+.on("postgres_changes",
+  {event:"*",schema:"public",table:"movies"},
+  ()=>loadMovies()
+)
+.subscribe();
+
+/* ===========================
+   BOOKING FLOW
+=========================== */
+
+async function bookMovie(movieId){
+
+  const {data:userData}=await supabase.auth.getUser();
+  const user=userData.user;
+
+  if(!user){
+    alert("Login first");
+    return;
+  }
+
+  await supabase.from("bookings").insert({
+    user_id:user.id,
+    movie_id:movieId,
+    seats:1
+  });
+
+  mockEmail();
+  simulatePayment(movieId);
+}
+
+/* ===========================
+   MOCK EMAIL
+=========================== */
+
+function mockEmail(){
+  alert("✅ Booking confirmed (Mock Email)");
+}
+
+/* ===========================
+   MOCK PAYMENT
+=========================== */
+
+async function simulatePayment(movieId){
+
+  alert("Processing Payment...");
+
+  setTimeout(async ()=>{
+
+    const {data:userData}=await supabase.auth.getUser();
+
+    await supabase
+      .from("bookings")
+      .update({payment_status:"Paid"})
+      .eq("user_id",userData.user.id)
+      .eq("movie_id",movieId);
+
+    alert("💳 Payment Successful");
+
+  },3000);
+}
+
+/* ===========================
+   SCHEDULED AVAILABILITY TASK
+=========================== */
+
+async function updateAvailability(){
+
+  const {data:movies}=await supabase
+    .from("movies")
+    .select("*");
+
+  movies.forEach(async movie=>{
+
+    if(movie.available_seats<=0){
+      await supabase
+        .from("movies")
+        .update({status:"Housefull"})
+        .eq("id",movie.id);
+    }
+
+  });
+}
+
+/* run every minute */
+setInterval(updateAvailability,60000);
+
+/* AUTO LOAD IF SESSION EXISTS */
+supabase.auth.getSession().then(({data})=>{
+  if(data.session) loadMovies();
+});
+
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Booking - Seat Selection</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    background:#f4f4f4;
+}
+
+/* MOVIE CARD */
+.movie-card{
+    background:white;
+    width:260px;
+    padding:20px;
+    margin:40px auto;
+    border-radius:12px;
+    box-shadow:0 0 12px rgba(0,0,0,0.2);
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    background:#1976d2;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+/* SEAT SECTION */
+#seatSection{
+    display:none;
+    margin-top:20px;
+}
+
+.screen{
+    background:#333;
+    color:white;
+    padding:12px;
+    width:70%;
+    margin:20px auto;
+    border-radius:6px;
+    font-weight:bold;
+}
+
+/* SEATS GRID */
+.seat-container{
+    display:grid;
+    grid-template-columns: repeat(10,45px);
+    gap:12px;
+    justify-content:center;
+}
+
+/* AVAILABLE SEAT */
+.seat{
+    width:45px;
+    height:45px;
+    border:2px solid green;
+    color:green;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    border-radius:6px;
+    font-size:13px;
+}
+
+/* SELECTED */
+.selected{
+    background:green;
+    color:white;
+}
+
+/* FILLED */
+.filled{
+    background:gray;
+    border:none;
+    color:white;
+    cursor:not-allowed;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🎬 Movie Booking</h1>
+
+<!-- MOVIE SECTION -->
+<div class="movie-card" id="movieSection">
+
+<h2>Pushpa 2</h2>
+
+<label>Select Tickets:</label>
+<select id="ticketCount">
+<option value="1">1 Ticket</option>
+<option value="2">2 Tickets</option>
+<option value="3">3 Tickets</option>
+<option value="4">4 Tickets</option>
+</select>
+
+<br>
+
+<button onclick="selectShowtime()">Select Showtime</button>
+
+</div>
+
+
+<!-- SEAT SELECTION -->
+<div id="seatSection">
+
+<h2>Select Your Seats</h2>
+
+<div class="screen">SCREEN</div>
+
+<div id="seatContainer" class="seat-container"></div>
+
+<h3 id="selectedInfo"></h3>
+
+</div>
+
+
+<script>
+
+let maxSeats = 1;
+let selectedSeats = [];
+
+/* Example filled seats */
+const filledSeats = [3,5,9,14,18,22,30,44,50];
+
+
+/* SHOWTIME CLICK */
+function selectShowtime(){
+
+    maxSeats = parseInt(document.getElementById("ticketCount").value);
+
+    /* HIDE MOVIE CARD */
+    document.getElementById("movieSection").style.display = "none";
+
+    /* SHOW SEATS */
+    document.getElementById("seatSection").style.display = "block";
+
+    generateSeats();
+
+    /* AUTO SCROLL */
+    document.getElementById("seatSection")
+        .scrollIntoView({behavior:"smooth"});
+}
+
+
+/* CREATE SEATS */
+function generateSeats(){
+
+    const container = document.getElementById("seatContainer");
+    container.innerHTML="";
+    selectedSeats=[];
+
+    for(let i=1;i<=60;i++){
+
+        let seat=document.createElement("div");
+        seat.classList.add("seat");
+        seat.innerText=i;
+
+        if(filledSeats.includes(i)){
+            seat.classList.add("filled");
+        }
+        else{
+            seat.addEventListener("click",()=>toggleSeat(seat,i));
+        }
+
+        container.appendChild(seat);
+    }
+
+    updateInfo();
+}
+
+
+/* SELECT / DESELECT SEAT */
+function toggleSeat(seat,number){
+
+    if(seat.classList.contains("selected")){
+        seat.classList.remove("selected");
+        selectedSeats = selectedSeats.filter(s=>s!==number);
+    }
+    else{
+
+        if(selectedSeats.length >= maxSeats){
+            alert("You can select only " + maxSeats + " seats");
+            return;
+        }
+
+        seat.classList.add("selected");
+        selectedSeats.push(number);
+    }
+
+    updateInfo();
+}
+
+
+/* UPDATE COUNT */
+function updateInfo(){
+    document.getElementById("selectedInfo").innerText =
+        "Selected Seats: " + selectedSeats.length +
+        " / " + maxSeats;
+}
+
+</script>
+
+</body>
+</html>
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movie Ticket Payment</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background:#f4f4f4;
+    margin:0;
+    padding:0;
+}
+
+.container{
+    width:80%;
+    margin:auto;
+    margin-top:30px;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+    color:#333;
+}
+
+.summary{
+    background:#fafafa;
+    padding:15px;
+    border-radius:8px;
+    margin-bottom:20px;
+}
+
+.payment-methods label{
+    display:block;
+    margin:10px 0;
+    font-size:18px;
+}
+
+button{
+    padding:12px 25px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#218838;
+}
+
+.receipt{
+    background:#e9ffe9;
+    padding:20px;
+    border-radius:8px;
+    margin-top:20px;
+    display:none;
+}
+
+input{
+    padding:8px;
+    width:250px;
+    margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Payment Page</h2>
+
+<!-- Booking Summary -->
+<div class="summary">
+<h3>Booking Summary</h3>
+
+<p><b>Movie:</b> <span id="movieName"></span></p>
+<p><b>Selected Seats:</b> <span id="selectedSeats"></span></p>
+<p><b>Total Amount:</b> ₹<span id="totalAmount"></span></p>
+</div>
+
+<!-- Payment Options -->
+<div class="payment-methods">
+<h3>Select Payment Method</h3>
+
+<label>
+<input type="radio" name="payment" value="Debit Card"> Debit Card
+</label>
+
+<label>
+<input type="radio" name="payment" value="Credit Card"> Credit Card
+</label>
+
+<label>
+<input type="radio" name="payment" value="UPI"> UPI
+</label>
+</div>
+
+<br>
+
+<!-- Payment Details -->
+<div id="paymentDetails"></div>
+
+<br>
+
+<button onclick="processPayment()">Pay Now</button>
+
+<!-- Receipt -->
+<div class="receipt" id="receipt">
+<h2>✅ Payment Successful</h2>
+<p><b>Booking ID:</b> <span id="bookingId"></span></p>
+<p><b>Movie:</b> <span id="rMovie"></span></p>
+<p><b>Seats:</b> <span id="rSeats"></span></p>
+<p><b>Amount Paid:</b> ₹<span id="rAmount"></span></p>
+<p>🎬 Enjoy your movie!</p>
+</div>
+
+</div>
+
+<script>
+
+/* ---------- SAMPLE DATA (Normally comes from seat page) ---------- */
+/* In real project use localStorage from seat selection page */
+
+localStorage.setItem("movie","Avengers Endgame");
+localStorage.setItem("seats","A1, A2, A3");
+localStorage.setItem("amount","450");
+
+/* ---------- Load Summary ---------- */
+
+const movie = localStorage.getItem("movie");
+const seats = localStorage.getItem("seats");
+const amount = localStorage.getItem("amount");
+
+document.getElementById("movieName").innerText = movie;
+document.getElementById("selectedSeats").innerText = seats;
+document.getElementById("totalAmount").innerText = amount;
+
+
+/* ---------- Show Payment Inputs ---------- */
+
+document.querySelectorAll('input[name="payment"]').forEach(option=>{
+    option.addEventListener("change",function(){
+
+        let html="";
+
+        if(this.value==="Debit Card" || this.value==="Credit Card"){
+            html=`
+                <h4>Enter Card Details</h4>
+                Card Number:<br>
+                <input type="text" placeholder="1234 5678 9012 3456"><br><br>
+                Expiry Date:<br>
+                <input type="text" placeholder="MM/YY"><br><br>
+                CVV:<br>
+                <input type="password" placeholder="123">
+            `;
+        }
+
+        if(this.value==="UPI"){
+            html=`
+                <h4>Enter UPI ID</h4>
+                <input type="text" placeholder="example@upi">
+            `;
+        }
+
+        document.getElementById("paymentDetails").innerHTML = html;
+    });
+});
+
+
+/* ---------- Payment Processing ---------- */
+
+function processPayment(){
+
+    const method = document.querySelector('input[name="payment"]:checked');
+
+    if(!method){
+        alert("Please select payment method");
+        return;
+    }
+
+    // Fake payment gateway simulation
+    alert("Processing payment via " + method.value + "...");
+
+    setTimeout(()=>{
+        showReceipt();
+    },1500);
+}
+
+
+/* ---------- Show Receipt ---------- */
+
+function showReceipt(){
+
+    const bookingId = "BOOK" + Math.floor(Math.random()*100000);
+
+    document.getElementById("bookingId").innerText = bookingId;
+    document.getElementById("rMovie").innerText = movie;
+    document.getElementById("rSeats").innerText = seats;
+    document.getElementById("rAmount").innerText = amount;
+
+    document.getElementById("receipt").style.display="block";
+}
+
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date & Showtime Selection</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+    padding:20px;
+}
+
+.container{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    width:85%;
+    margin:auto;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align:center;
+}
+
+/* ---------- Seat Section ---------- */
+.seat-section{
+    margin-bottom:20px;
+}
+
+/* ---------- Horizontal Date Row ---------- */
+
+.date-row{
+    display:flex;
+    overflow-x:auto;
+    gap:15px;
+    padding:15px 0;
+    border-top:2px solid #eee;
+    border-bottom:2px solid #eee;
+}
+
+.date-card{
+    min-width:90px;
+    padding:10px;
+    text-align:center;
+    background:#fafafa;
+    border-radius:8px;
+    cursor:pointer;
+    border:2px solid transparent;
+    flex-shrink:0;
+}
+
+.date-card:hover{
+    background:#e8f0ff;
+}
+
+.date-card.active{
+    background:#007bff;
+    color:white;
+    border-color:#0056b3;
+}
+
+/* ---------- Theater Layout ---------- */
+
+.theater{
+    background:#f9f9f9;
+    margin-top:20px;
+    padding:15px;
+    border-radius:8px;
+}
+
+.showtimes{
+    margin-top:10px;
+}
+
+.showtime-btn{
+    padding:8px 15px;
+    margin:5px;
+    border:none;
+    background:#28a745;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.showtime-btn:hover{
+    background:#218838;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Select Date & Showtime</h2>
+
+<!-- Number of Seats Section -->
+<div class="seat-section">
+<h3>Number of Seats</h3>
+<select>
+<option>1 Seat</option>
+<option>2 Seats</option>
+<option>3 Seats</option>
+<option>4 Seats</option>
+</select>
+</div>
+
+<!-- Horizontal Scrollable Date Row -->
+<h3>Select Date</h3>
+
+<div class="date-row" id="dateRow"></div>
+
+<!-- Theater & Showtime Display -->
+<div id="theaterContainer"></div>
+
+</div>
+
+<script>
+
+/* -------- Date + Showtime Data -------- */
+
+const schedule = {
+    "Mar 01": [
+        {hall:"PVR Cinemas - Hall 1", times:["10:00 AM","1:30 PM","6:00 PM"]},
+        {hall:"INOX - Hall 2", times:["11:00 AM","4:00 PM","9:00 PM"]}
+    ],
+    "Mar 02": [
+        {hall:"PVR Cinemas - Hall 3", times:["9:30 AM","2:00 PM","7:00 PM"]},
+        {hall:"Cinepolis - Hall 1", times:["12:00 PM","5:30 PM","10:00 PM"]}
+    ],
+    "Mar 03": [
+        {hall:"AMB Cinemas - Hall 2", times:["10:30 AM","3:00 PM","8:00 PM"]},
+        {hall:"INOX - Hall 5", times:["1:00 PM","6:30 PM","9:45 PM"]}
+    ],
+    "Mar 04": [
+        {hall:"PVR Cinemas - Hall 4", times:["11:15 AM","2:45 PM","7:30 PM"]}
+    ],
+    "Mar 05": [
+        {hall:"Cinepolis - Hall 2", times:["10:00 AM","4:15 PM","8:45 PM"]}
+    ]
+};
+
+/* -------- Create Date Row -------- */
+
+const dateRow = document.getElementById("dateRow");
+
+Object.keys(schedule).forEach(date => {
+
+    const div = document.createElement("div");
+    div.className="date-card";
+    div.innerHTML=`<b>${date}</b>`;
+
+    div.onclick = () => selectDate(div, date);
+
+    dateRow.appendChild(div);
+});
+
+
+/* -------- Date Selection -------- */
+
+function selectDate(element, date){
+
+    document.querySelectorAll(".date-card")
+        .forEach(d=>d.classList.remove("active"));
+
+    element.classList.add("active");
+
+    showTheaters(date);
+}
+
+
+/* -------- Display Halls & Showtimes -------- */
+
+function showTheaters(date){
+
+    const container = document.getElementById("theaterContainer");
+    container.innerHTML="";
+
+    schedule[date].forEach(theater=>{
+
+        const theaterDiv = document.createElement("div");
+        theaterDiv.className="theater";
+
+        let timesHTML="";
+
+        theater.times.forEach(time=>{
+            timesHTML += `<button class="showtime-btn">${time}</button>`;
+        });
+
+        theaterDiv.innerHTML = `
+            <h3>${theater.hall}</h3>
+            <div class="showtimes">${timesHTML}</div>
+        `;
+
+        container.appendChild(theaterDiv);
+    });
+}
+
+</script>
+
+</body>
+</html>
